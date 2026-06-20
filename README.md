@@ -18,8 +18,6 @@ Workers do not merge. A single merge coordinator or merge queue owns the protect
 
 ![Many agents submit PRs into one queue, the queue validates a batch, then protected main deploys the latest green commit.](assets/merge-flow-gpt-image-2.png)
 
-Concept visual generated with GPT Image 2.
-
 The practical protocol:
 
 1. Workers open PRs and stop after posting a structured merge request.
@@ -50,14 +48,14 @@ Failure isolation matters:
 | 16 PRs, 1 bad PR, batch 16 with parallel split | 15 good landed, 1 isolated, 10m 02s |
 | 40 PRs, 1 bad PR, batch 16 with parallel split | 39 good landed, 1 isolated, 14m 50s |
 
-Real-repo validation was also run against an npm workspace application in an isolated clone:
+Real-repo validation was also run against [MySkills](https://github.com/jremick/myskills), a public npm workspace application, using an isolated clone:
 
 | Real validation | Result |
 | --- | --- |
 | 8 synthetic PR branches, real web test command | 1 integration test run, target passed |
 | 5 synthetic PR branches, 1 injected bad branch | 4 good branches landed, bad branch isolated, target passed |
 
-The real-repo source path and scratch outputs are intentionally not included in this public repository.
+Scratch clone paths and raw logs are intentionally not included in this public repository.
 
 ## Run the checks
 

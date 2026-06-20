@@ -50,7 +50,7 @@ Expected result:
 
 ## Real-Repo Validation Boundary
 
-A real npm workspace application was used as an external validation case in an isolated clone. The validation ran the app's real web test command after creating synthetic PR branches.
+[MySkills](https://github.com/jremick/myskills), a public npm workspace application, was used as an external validation case in an isolated clone. The validation ran the app's real web test command after creating synthetic PR branches.
 
 Public-safe summary:
 
@@ -59,7 +59,7 @@ Public-safe summary:
 | 8 synthetic PR branches | 1 real integration test run; target passed |
 | 5 synthetic PR branches with 1 injected bad branch | 4 good branches landed; 1 bad branch isolated; target passed |
 
-The source path, scratch clone path, raw logs, and repository-specific internals are intentionally omitted from this public artifact.
+Scratch clone paths, raw logs, and repository-specific internals are intentionally omitted from this public artifact.
 
 ## Scale Boundary
 
