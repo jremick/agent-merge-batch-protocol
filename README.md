@@ -1,10 +1,12 @@
 # Agent Merge Batch Protocol
 
-Public research note and reproducible validation for the merge bottleneck described in this reference thread:
+Matthew Berman is an AI educator and creator focused on making AI and emerging technology more accessible. In the reference post below, he described a practical coding-agent bottleneck: many agents finish PRs, 5-8 are ready to land, then asking each agent to "deploy" makes them all contend for `main`. With about 2 minutes of CI per merge, later PRs get stuck in stale-branch, lock, rebase, and retry loops until the fifth, sixth, or seventh PR can take an hour or more to land.
 
 https://x.com/matthewberman/status/2068106301402755268
 
-The thread describes many agents producing ready pull requests, then all trying to merge or deploy against `main`. Each individual merge needs CI, and the later PRs get trapped in stale-branch, lock, rebase, and retry loops.
+This repo is a public research note and reproducible validation artifact for that merge bottleneck.
+
+It also includes agent-ready instructions in [AGENTS.md](AGENTS.md) and [examples/agent-instructions.md](examples/agent-instructions.md), so people can ask Claude, Codex, or another coding agent to adapt and apply the approach in their own environment with checks and stop conditions.
 
 ## Goal
 
@@ -76,10 +78,6 @@ See:
 - [Validation notes](docs/validation.md)
 - [Safe application guide](docs/apply-safely.md)
 - [Agent instructions template](examples/agent-instructions.md)
-
-## Public safety
-
-This repository intentionally excludes raw social exports, local machine paths, private repo paths, credentials, auth output, deployment identifiers, `.env` files, and private infrastructure names.
 
 ## License
 
