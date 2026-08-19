@@ -2,6 +2,8 @@
 
 Use this guide when applying the protocol to a real repository.
 
+Before starting, confirm that the work actually arrives as independently reviewable PRs. If agents report to one parent task or edit one shared working tree, use parent-owned integration and disjoint file ownership instead of this protocol.
+
 ## 1. Inventory The Current Write Path
 
 Capture without exposing secrets:
@@ -25,7 +27,7 @@ Use the smallest reliable queue that the repository can support:
 
 | Context | Likely choice |
 | --- | --- |
-| GitHub merge queue is available | Start there. |
+| GitHub merge queue is available for the repository's ownership and plan context | Start there, then add `merge_group` CI. |
 | Team already uses Graphite | Use Graphite merge queue. |
 | Need explicit batch merge semantics | Evaluate Mergify batch queue. |
 | None are available | Use a custom coordinator with temporary integration branches and protected base writes. |

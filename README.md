@@ -1,16 +1,32 @@
 # Agent Merge Batch Protocol
 
+> **Point-in-time research:** This repository captures research, modeling, and validation completed on 2026-06-20. External references were rechecked on 2026-08-19, but the benchmarks were not rerun and this is not a continuously maintained compatibility guide. Revalidate provider availability, queue semantics, CI behavior, and measured assumptions before adoption.
+
 Matthew Berman is an AI educator and creator focused on making AI and emerging technology more accessible. In the reference post below, he described a practical coding-agent bottleneck: many agents finish PRs, 5-8 are ready to land, then asking each agent to "deploy" makes them all contend for `main`. With about 2 minutes of CI per merge, later PRs get stuck in stale-branch, lock, rebase, and retry loops until the fifth, sixth, or seventh PR can take an hour or more to land.
 
 https://x.com/matthewberman/status/2068106301402755268
 
-This repo is a public research note and reproducible validation artifact for that merge bottleneck.
+This repo is a public research note and reproducible validation artifact for that merge bottleneck when independent coding agents produce separate pull requests.
 
 It also includes agent-ready instructions in [AGENTS.md](AGENTS.md) and [examples/agent-instructions.md](examples/agent-instructions.md), so people can ask Claude, Codex, or another coding agent to adapt and apply the approach in their own environment with checks and stop conditions.
 
 ## Goal
 
-Land 5-8 ready agent PRs in minutes, not an hour, without letting many agents fight over `main`.
+Land 5-8 ready, independent agent PRs in minutes, not an hour, without letting many agents fight over `main`.
+
+## Scope: choose topology before protocol
+
+This protocol starts after work has been split into independently reviewable PRs. It is not the default coordination model for every multi-agent task.
+
+| Execution topology | Recommended coordination | Does this protocol apply? |
+| --- | --- | --- |
+| Read-only subagents reporting to one parent task | The parent synthesizes findings and owns the result. | No |
+| Editing agents sharing one working tree | Give agents disjoint ownership; the parent integrates and verifies. | Usually no |
+| Local agents in isolated worktrees | Integrate through one parent or open PRs when independent review is useful. | Sometimes |
+| Cloud or otherwise independent agents opening PRs | Protect `main`; workers stop at PR handoff; one queue or coordinator integrates. | Yes |
+| Sustained high-volume PR stream | Use a real merge queue or a deliberately operated integration service. | Yes |
+
+For a typical Codex task, subagents are part of one parent-owned unit of work. This repository is relevant only when those workstreams intentionally become independent PR producers.
 
 ## Proposed solution
 
@@ -27,7 +43,7 @@ The practical protocol:
 5. A failing batch is split until bad PRs are isolated.
 6. Production deploys the newest green `main` commit, separately from PR merge validation.
 
-This can be implemented with GitHub merge queue, Graphite, Mergify batch queues, or a custom coordinator that creates temporary integration branches.
+At the research date, this could be implemented with GitHub merge queue, Graphite, Mergify batch queues, or a custom coordinator that creates temporary integration branches. GitHub's current documentation limits native merge queues to public repositories owned by organizations and private organization repositories on Enterprise Cloud; personal-account repositories need another path unless ownership or plan context changes.
 
 ## Simplified test results
 
@@ -68,6 +84,10 @@ python3 scripts/scan_public_safety.py .
 ## What this is not
 
 This is not a claim that a prompt or `AGENTS.md` file alone solves the problem. Agent instructions stop workers from making the bottleneck worse. The throughput comes from protected ownership of `main`, synthetic integration validation, batching, and failure isolation.
+
+It is also not a recommendation to turn ordinary parent/subagent collaboration into a fleet of PRs. Extra branches, queues, and coordinator roles should be introduced only when independent review, isolation, or deployment boundaries justify them.
+
+The timing tables are modeled results under the stated assumptions, not a universal throughput promise. The real-repository proof was bounded and does not establish production safety across other repositories, providers, CI systems, or deployment environments.
 
 See:
 

@@ -1,5 +1,7 @@
 # Approach
 
+> This operating model applies to independent PR-producing workstreams. For read-only subagents or agents editing one parent-owned task, keep integration and verification with the parent instead of adding a merge queue.
+
 ## Operating Model
 
 Use a queue with one owner for `main`.
