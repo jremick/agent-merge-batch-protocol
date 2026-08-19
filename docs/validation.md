@@ -1,5 +1,7 @@
 # Validation
 
+> These are point-in-time validation results captured on 2026-06-20. They were not rerun during the 2026-08-19 documentation refresh.
+
 This repository includes two local validation styles:
 
 1. deterministic event modeling;
